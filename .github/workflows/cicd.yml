@@ -1,0 +1,54 @@
+name: Deploy Newsletterly
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted  # Use your self-hosted runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install & Build Client
+        run: |
+          cd client
+          npm install
+
+      - name: Install Server Dependencies
+        run: |
+          cd server
+          npm install
+
+      - name: Install Root Dependencies & Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Copy and Source Environment
+        run: |
+          cp /home/ubuntu/set-env.sh .
+          source set-env.sh || echo "Env not sourced (GitHub shell limitation)"
+
+      - name: Install pm2 if missing
+        run: |
+          if ! command -v pm2 &> /dev/null; then
+             npm install -g pm2
+          fi
+
+      - name: Start or Reload App with pm2
+        run: |
+          # Reload app if it exists, else start new
+          if pm2 list | grep -q "newsletterly"; then
+            pm2 reload newsletterly --update-env
+          else
+            pm2 start npm --name "newsletterly" -- start
+          fi
+          pm2 save
+
+      - name: Log pm2 processes
+        run: |
+          pm2 list
