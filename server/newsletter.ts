@@ -3,6 +3,9 @@ import { load } from "cheerio";
 import { ChatOpenAI } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { loadSummarizationChain } from "langchain/chains";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

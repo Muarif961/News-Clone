@@ -5,6 +5,9 @@ import fs from "fs";
 import OpenAI from "openai";
 import { load } from "cheerio";
 import { data } from "node_modules/cheerio/lib/esm/api/attributes";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 const router = express.Router();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });

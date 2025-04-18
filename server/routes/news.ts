@@ -5,6 +5,9 @@ import {
   generateAINewsletter,
 } from "../newsletter";
 import OpenAI from "openai";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 const router = express.Router();
 

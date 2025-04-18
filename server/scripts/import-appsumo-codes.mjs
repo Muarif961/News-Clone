@@ -8,10 +8,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const { Pool } = pg;
+const caCert = fs.readFileSync(path.join(__dirname, '..', 'certs', 'rds-ca-bundle.pem')).toString();
+
 
 // Initialize PostgreSQL connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: caCert
+  }
 });
 
 async function importAppSumoCodes() {

@@ -16,6 +16,8 @@ import { setupAuth } from "./auth";
 import { integrateFixedPortalHandler } from "./routes/stripe-portal";
 // Import both template handlers for compatibility
 import { integrateTemplatePatch } from "./apply-template-patch";
+import {configDotenv} from 'dotenv';
+configDotenv();
 
 // Function to get formatted time
 const getFormattedTime = () => {
@@ -27,7 +29,7 @@ const getFormattedTime = () => {
   });
 };
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 4001;
 const HOST = "0.0.0.0";
 
 const app = express();

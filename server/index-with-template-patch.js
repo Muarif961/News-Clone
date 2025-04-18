@@ -18,6 +18,9 @@ const cors = require("cors");
 const { setupAuth } = require("./auth");
 const { integrateFixedPortalHandler } = require("./routes/stripe-portal");
 const { integrateTemplatesRouter } = require("./integrate-templates");
+const { configDotenv } = require("dotenv");
+
+configDotenv();
 
 // Function to get formatted time
 const getFormattedTime = () => {

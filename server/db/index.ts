@@ -1,12 +1,25 @@
-
 import { drizzle } from 'drizzle-orm/node-postgres';
 import pkg from 'pg';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import * as schema from './schema';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const { Pool } = pkg;
-import * as schema from "./schema";
+
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  max: 10
+  max: 10,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync(path.join(__dirname, '..', 'certs', 'rds-ca-bundle.pem')).toString()
+  }
 });
 
 export const db = drizzle(pool, { schema });
